@@ -1,0 +1,76 @@
+/* Estilo Munster: negro y morado */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a; /* Negro */
+    color: #e6e6e6; /* Gris claro */
+}
+
+h1, h2 {
+    color: #ff0000; /* Rojo intenso */
+    text-align: center;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #262626; /* Negro más claro */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button {
+    background-color: #a64ac9; /* Morado */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 50px; /* Botones redondeados */
+    cursor: pointer; /* Cursor estándar */
+    font-size: 16px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 0 10px rgba(186, 85, 211, 0.7); /* Más brillo */
+}
+
+button:hover {
+    background-color: #e066ff; /* Púrpura neón más brillante */
+    box-shadow: 0 0 20px rgba(224, 102, 255, 1); /* Efecto neón más brillante */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #444;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #333;
+    color: #a64ac9; /* Morado */
+}
+
+td {
+    background-color: #1f1f1f; /* Negro intermedio */
+}
+
+input[type="text"], input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background-color: #262626; /* Negro más claro */
+    color: #e6e6e6; /* Gris claro */
+}
+
+input[type="text"]:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: #a64ac9; /* Morado */
+}

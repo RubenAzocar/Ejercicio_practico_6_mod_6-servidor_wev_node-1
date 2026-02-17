@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Películas y Series</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Catálogo de Películas y Series</h1>
+
+        <button id="listMovies">LISTA DE PELÍCULAS</button>
+        <button id="listSeries">LISTA DE SERIES</button>
+
+        <h2>Agregar Nueva Película</h2>
+        <form id="addMovieForm">
+            <input type="text" id="movieName" placeholder="Nombre" required>
+            <input type="text" id="movieDirector" placeholder="Director" required>
+            <input type="number" id="movieYear" placeholder="Año" required>
+            <button type="submit">AGREGAR NUEVA PELÍCULA</button>
+        </form>
+
+        <h2>Agregar Nueva Serie</h2>
+        <form id="addSeriesForm">
+            <input type="text" id="seriesName" placeholder="Nombre" required>
+            <input type="number" id="seriesYear" placeholder="Año Estreno" required>
+            <input type="number" id="seriesSeasons" placeholder="Número de Temporadas" required>
+            <button type="submit">AGREGAR NUEVA SERIE</button>
+        </form>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://localhost:3000'; // Updated to match the server port
+
+        document.getElementById('listMovies').addEventListener('click', () => {
+            fetch(`${apiUrl}/api/movies`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => displayData(data, 'Películas'))
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(`Error al obtener películas: ${error.message}`);
+                });
+        });
+
+        document.getElementById('listSeries').addEventListener('click', () => {
+            fetch(`${apiUrl}/api/series`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+                    return response.json();
+                })
+                .then(data => displayData(data, 'Series'))
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(`Error al obtener series: ${error.message}`);
+                });
+        });
+
+        document.getElementById('addMovieForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('movieName').value;
+            const director = document.getElementById('movieDirector').value;
+            const year = document.getElementById('movieYear').value;
+
+            fetch(`${apiUrl}/api/movies`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, director, year })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('addSeriesForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('seriesName').value;
+            const year = document.getElementById('seriesYear').value;
+            const seasons = document.getElementById('seriesSeasons').value;
+
+            fetch(`${apiUrl}/api/series`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, year, seasons })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        });
+
+        function displayData(data, title) {
+            const output = document.getElementById('output');
+            output.innerHTML = `<h2>${title}</h2>`;
+
+            if (data.length === 0) {
+                output.innerHTML += '<p>No hay datos disponibles.</p>';
+                return;
+            }
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            const headers = Object.keys(data[0]);
+            const headerRow = document.createElement('tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+                    td.textContent = item[header];
+                    row.appendChild(td);
+                });
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            output.appendChild(table);
+        }
+    </script>
+</body>
+</html>
